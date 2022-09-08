@@ -17,6 +17,7 @@ double Bisection::findRoot(Polynomial polynomial, BaseFunc baseFunc, Segment seg
         segment.updateB(segment.getCenterOfSegment());
         return findRoot(polynomial, baseFunc, segment);
     }
+    return 0;
 }
 
 // #TODO переделать else если не заробит!!!

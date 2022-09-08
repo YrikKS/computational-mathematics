@@ -10,8 +10,8 @@ void SquarPolynomial::findRoot() {
     findDiscriminant();
     if (getRootCount() == RootCount::ZERO)
         return;
-    root.first = (b + discriminant) / (2 * a);
-    root.second = (b - discriminant) / (2 * a);
+    root.second = (b + discriminant) / (2 * a);
+    root.first = (b - discriminant) / (2 * a);
 }
 
 double SquarPolynomial::getA() const {

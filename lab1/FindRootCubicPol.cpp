@@ -2,6 +2,7 @@
 // Created by kurya on 08.09.2022.
 //
 
+#include <iostream>
 #include "FindRootCubicPol.h"
 
 FindRootCubicPol::FindRootCubicPol(double accuracy, double a, double b, double c, double d) {
@@ -50,6 +51,7 @@ void FindRootCubicPol::findRootWithDerivativeOneRoot(SquarPolynomial derivative)
 }
 
 void FindRootCubicPol::findRootWithDerivativeTwoRoot(SquarPolynomial derivative) {
+    std::cout << cubicPolynomial.findValueInPoint(derivative.getRoot().first) << std::endl;
     if (cubicPolynomial.findValueInPoint(derivative.getRoot().first) > baseFunc.getAccuracy()) {
         if (cubicPolynomial.findValueInPoint(derivative.getRoot().second) > baseFunc.getAccuracy()) { // 4
             rootCount = RootCount::ONE;
@@ -57,7 +59,8 @@ void FindRootCubicPol::findRootWithDerivativeTwoRoot(SquarPolynomial derivative)
             segment.findInfinitySegment(cubicPolynomial, false);
             root0 = bisection.findRoot(cubicPolynomial, baseFunc, segment);
             return;
-        } else if (std::abs(cubicPolynomial.findValueInPoint(derivative.getRoot().second)) < baseFunc.getAccuracy()) { // 1
+        } else if (std::abs(cubicPolynomial.findValueInPoint(derivative.getRoot().second)) <
+                   baseFunc.getAccuracy()) { // 1
             rootCount = RootCount::TWO;
             root0 = cubicPolynomial.findValueInPoint(derivative.getRoot().second);
             multiplicityVector[0] = 2;
@@ -98,12 +101,55 @@ void FindRootCubicPol::findRootWithDerivativeTwoRoot(SquarPolynomial derivative)
             Segment segment1(derivative.getRoot().second, derivative.getRoot().second + 1);
             segment1.findInfinitySegment(cubicPolynomial, true);
             root1 = bisection.findRoot(cubicPolynomial, baseFunc, segment1);
+            return;
+        } else if (
+                std::abs(cubicPolynomial.findValueInPoint(derivative.getRoot().second)) < baseFunc.getAccuracy()) { // 6
+            rootCount = RootCount::ONE;
+            root0 = (derivative.getRoot().first + derivative.getRoot().second) / 2;
+            multiplicityVector[0] = 3;
+            return;
         }
-    } else if (std::abs(cubicPolynomial.findValueInPoint(derivative.getRoot().first)) < baseFunc.getAccuracy() &&
-               std::abs(cubicPolynomial.findValueInPoint(derivative.getRoot().second)) < baseFunc.getAccuracy()) { // 6
-        rootCount = RootCount::ONE;
-        root0 = (derivative.getRoot().first + derivative.getRoot().second) / 2;
-        multiplicityVector[0] = 3;
+    }
+//    if (std::abs(cubicPolynomial.findValueInPoint(derivative.getRoot().first)) < baseFunc.getAccuracy() &&
+//        std::abs(cubicPolynomial.findValueInPoint(derivative.getRoot().second)) < baseFunc.getAccuracy()) { // 6
+//        rootCount = RootCount::ONE;
+//        root0 = (derivative.getRoot().first + derivative.getRoot().second) / 2;
+//        multiplicityVector[0] = 3;
+//        return;
+//    }
+}
+
+void FindRootCubicPol::printAll() {
+    if (rootCount == RootCount::ONE) {
+        std::cout << "x1 = " << root0;
+        if (multiplicityVector[0] > 1)
+            std::cout << " multiplicity " << multiplicityVector[0];
+        std::cout << std::endl;
+    } else if (rootCount == RootCount::TWO) {
+        std::cout << "x1 = " << root0;
+        if (multiplicityVector[0] > 1)
+            std::cout << " multiplicity " << multiplicityVector[0];
+        std::cout << std::endl;
+
+        std::cout << "x2 = " << root1;
+        if (multiplicityVector[1] > 1)
+            std::cout << " multiplicity " << multiplicityVector[1];
+        std::cout << std::endl;
+    } else if (rootCount == RootCount::THREE) {
+        std::cout << "x1 = " << root0;
+        if (multiplicityVector[0] > 1)
+            std::cout << " multiplicity " << multiplicityVector[0];
+        std::cout << std::endl;
+
+        std::cout << "x2 = " << root1;
+        if (multiplicityVector[1] > 1)
+            std::cout << " multiplicity " << multiplicityVector[1];
+        std::cout << std::endl;
+
+        std::cout << "x3 = " << root2;
+        if (multiplicityVector[2] > 1)
+            std::cout << " multiplicity " << multiplicityVector[2];
+        std::cout << std::endl;
     }
 }
 

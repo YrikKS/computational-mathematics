@@ -16,7 +16,7 @@ public:
 
     double getCenterOfSegment();
 
-    void findInfinitySegment(Polynomial polynomial, bool plusInfinity);
+    void findInfinitySegment(Polynomial* polynomial, bool plusInfinity);
 
     void preparationVariables(bool plusInfinity);
 

@@ -2,6 +2,7 @@
 // Created by kurya on 07.09.2022.
 //
 
+#include <iostream>
 #include "Segment.h"
 
 double Segment::getCenterOfSegment() {
@@ -28,23 +29,24 @@ void Segment::updateB(double b) {
 
 Segment::Segment(double a, double b) : a(a), b(b) {}
 
-void Segment::findInfinitySegment(Polynomial polynomial, bool plusInfinity) {
+void Segment::findInfinitySegment(Polynomial* polynomial, bool plusInfinity) {
+    std::cout << polynomial->findValueInPoint(a) << " and " << polynomial->findValueInPoint(b) << std::endl;
     if (plusInfinity) {
-        if ((polynomial.findValueInPoint(a) < 0 && polynomial.findValueInPoint(b) > 0) ||
-            (polynomial.findValueInPoint(a) > 0 && polynomial.findValueInPoint(b) < 0))
+        if ((polynomial->findValueInPoint(a) < 0 && polynomial->findValueInPoint(b) > 0) ||
+            (polynomial->findValueInPoint(a) > 0 && polynomial->findValueInPoint(b) < 0))
             return;
         else {
-            a = a + 1;
-            b = b + 1;
+            a = a + 1.0;
+            b = b + 1.0;
             findInfinitySegment(polynomial, plusInfinity);
         }
     } else {
-        if ((polynomial.findValueInPoint(a) > 0 && polynomial.findValueInPoint(b) < 0) ||
-            (polynomial.findValueInPoint(a) < 0 && polynomial.findValueInPoint(b) > 0))
+        if ((polynomial->findValueInPoint(a) > 0 && polynomial->findValueInPoint(b) < 0) ||
+            (polynomial->findValueInPoint(a) < 0 && polynomial->findValueInPoint(b) > 0))
             return;
         else {
-            a = a - 1;
-            b = b - 1;
+            a = a - 1.0;
+            b = b - 1.0;
             findInfinitySegment(polynomial, plusInfinity);
         }
     }

@@ -4,8 +4,10 @@
 
 #ifndef LAB1_POLYNOMIAL_H
 #define LAB1_POLYNOMIAL_H
+
 class Polynomial {
 public:
-    virtual double findValueInPoint(double x);
+    virtual double findValueInPoint(double x) = 0;
 };
+
 #endif //LAB1_POLYNOMIAL_H

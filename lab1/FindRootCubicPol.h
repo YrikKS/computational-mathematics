@@ -16,6 +16,8 @@ public:
 
     void findRoot();
 
+    void printAll();
+
 private:
     double root0 = 0;
     double root1 = 0;
