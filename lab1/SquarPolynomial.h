@@ -8,6 +8,7 @@
 
 #include <utility>
 #include "Polynomial.h"
+#include "BaseFunc.h"
 
 enum RootCount {
     ZERO,
@@ -18,7 +19,9 @@ enum RootCount {
 
 class SquarPolynomial : public Polynomial {
 public:
-    SquarPolynomial(double a, double b, double c);
+    SquarPolynomial(double a, double b, double c, BaseFunc baseFunc);
+
+    SquarPolynomial();
 
     void findRoot();
 
@@ -47,6 +50,7 @@ private:
     double b;
     double c;
     double discriminant;
+    BaseFunc baseFunc = BaseFunc(0);
     std::pair<double, double> root;
 };
 

@@ -5,7 +5,7 @@
 #include "FindRootCubicPol.h"
 
 int main() {
-    FindRootCubicPol finder(0.0001, 1, 0, -1, 0);
+    FindRootCubicPol finder(0.001, 1, 0, -1, 0);
     finder.findRoot();
     finder.printAll();
 //    Bisection bisection;

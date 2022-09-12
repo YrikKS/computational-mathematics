@@ -18,6 +18,8 @@ public:
 
     void printAll();
 
+    virtual ~FindRootCubicPol();
+
 private:
     double root0 = 0;
     double root1 = 0;
@@ -27,7 +29,7 @@ private:
     void findRootWithDerivativeOneRoot(SquarPolynomial derivative);
     void findRootWithDerivativeTwoRoot(SquarPolynomial derivative);
     RootCount rootCount = RootCount::ZERO;
-    CubicPolynomial cubicPolynomial = CubicPolynomial(0, 0, 0, 0);
+    CubicPolynomial* cubicPolynomial = nullptr;
     Bisection bisection;
     Segment segment = Segment(0, 0);
     BaseFunc baseFunc = BaseFunc(0);

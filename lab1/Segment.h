@@ -12,11 +12,13 @@ class Segment {
 public:
     Segment(double a, double b);
 
+    Segment(double a, double b, double delta);
+
     bool isDifferentSignInPoint();
 
     double getCenterOfSegment();
 
-    void findInfinitySegment(Polynomial* polynomial, bool plusInfinity);
+    void findInfinitySegment(Polynomial *polynomial, bool plusInfinity);
 
     void preparationVariables(bool plusInfinity);
 
@@ -24,9 +26,14 @@ public:
 
     void updateB(double b);
 
+    double getA() const;
+
+    double getB() const;
+
 private:
     double a;
     double b;
+    double delta;
 };
 
 

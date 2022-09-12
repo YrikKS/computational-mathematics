@@ -12,7 +12,7 @@
 
 class Bisection {
 public:
-    double findRoot(Polynomial polynomial, BaseFunc baseFunc, Segment segment);
+    double findRoot(Polynomial* polynomial, BaseFunc baseFunc, Segment segment);
 };
 
 

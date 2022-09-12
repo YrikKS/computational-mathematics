@@ -11,7 +11,10 @@
 
 class CubicPolynomial : public Polynomial{
 public:
-    CubicPolynomial(double a, double b, double c, double d);
+    CubicPolynomial();
+
+    CubicPolynomial(double a, double b, double c, double d, BaseFunc baseFunc);
+//    void setAll(double a, double b, double c, double d, BaseFunc baseFunc);
 
     double findValueInPoint(double x) override;
 
@@ -25,12 +28,16 @@ public:
 
     double getD() const;
 
+    void setAll(double a, double b, double c, double d, BaseFunc baseFunc1);
+
 private:
     double a;
     double b;
     double c;
     double d;
-    SquarPolynomial derivative = SquarPolynomial(0, 0, 0);
+    BaseFunc baseFunc = BaseFunc(0.0001);
+    SquarPolynomial derivative;
+
 };
 
 

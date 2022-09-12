@@ -4,12 +4,13 @@
 
 #include "CubicPolynomial.h"
 
-CubicPolynomial::CubicPolynomial(double a, double b, double c, double d) {
+CubicPolynomial::CubicPolynomial(double a, double b, double c, double d, BaseFunc baseFunc) {
     CubicPolynomial::a = a;
     CubicPolynomial::b = b;
     CubicPolynomial::c = c;
     CubicPolynomial::d = d;
-    CubicPolynomial::derivative = SquarPolynomial(3*a, 2*b, c);
+    CubicPolynomial::baseFunc = BaseFunc(0.1);
+    CubicPolynomial::derivative = SquarPolynomial(3 * a, 2 * b, c, baseFunc);
 }
 
 double CubicPolynomial::getA() const {
@@ -35,3 +36,14 @@ double CubicPolynomial::findValueInPoint(double x) {
 SquarPolynomial CubicPolynomial::getDerivative() {
     return derivative;
 }
+
+void CubicPolynomial::setAll(double a, double b, double c, double d, BaseFunc baseFunc1) {
+    CubicPolynomial::a = a;
+    CubicPolynomial::b = b;
+    CubicPolynomial::c = c;
+    CubicPolynomial::d = d;
+    CubicPolynomial::baseFunc = baseFunc1;
+    derivative = SquarPolynomial(3 * a, 2 * b, c, baseFunc1);
+}
+
+CubicPolynomial::CubicPolynomial() {}
