@@ -6,7 +6,7 @@
 #include "Bisection.h"
 
 double Bisection::findRoot(Polynomial *polynomial, BaseFunc baseFunc, Segment segment) {
-    if ((polynomial->findValueInPoint(segment.getA()) >= 0) && (polynomial->findValueInPoint(segment.getB() <= 0))) {
+    if (((polynomial->findValueInPoint(segment.getA())) > 0) && ((polynomial->findValueInPoint(segment.getB())) < 0)) {
         if (baseFunc.isHitWithAccuracy(polynomial->findValueInPoint(segment.getCenterOfSegment()))) {
             return segment.getCenterOfSegment();
         } else if (polynomial->findValueInPoint(segment.getCenterOfSegment()) > baseFunc.getAccuracy()) {
@@ -16,7 +16,7 @@ double Bisection::findRoot(Polynomial *polynomial, BaseFunc baseFunc, Segment se
             segment.updateB(segment.getCenterOfSegment());
             return findRoot(polynomial, baseFunc, segment);
         }
-    } else if ((polynomial->findValueInPoint(segment.getA()) <= 0) && (polynomial->findValueInPoint(segment.getB() >= 0))) {
+    } else if ((polynomial->findValueInPoint(segment.getA()) < 0) && (polynomial->findValueInPoint(segment.getB()) > 0)) {
         if (baseFunc.isHitWithAccuracy(polynomial->findValueInPoint(segment.getCenterOfSegment()))) {
             return segment.getCenterOfSegment();
         } else if (polynomial->findValueInPoint(segment.getCenterOfSegment()) > baseFunc.getAccuracy()) {

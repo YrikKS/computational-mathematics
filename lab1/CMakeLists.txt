@@ -5,7 +5,17 @@ set(CMAKE_CXX_STANDARD 23)
 include_directories(googletest-release-1.12.1/googletest/include)
 add_subdirectory(googletest-release-1.12.1)
 
-add_executable(lab1 main.cpp Bisection.cpp BaseFunc.cpp SquarPolynomial.cpp CubicPolynomial.cpp Segment.cpp Polynomial.h FindRootCubicPol.cpp)
+add_executable(lab1
+        main.cpp
+        Bisection.cpp
+        BaseFunc.cpp
+        SquarPolynomial.cpp
+        CubicPolynomial.cpp
+        Segment.cpp
+        Polynomial.h
+        FindRootCubicPol.cpp
+        Reader.cpp
+        )
 
 add_executable(
         Test
@@ -17,6 +27,7 @@ add_executable(
         Segment.cpp
         Polynomial.h
         FindRootCubicPol.cpp
+        Reader.cpp
 )
 
 #add_executable(Test test.cpp Bisection.cpp BaseFunc.cpp SquarPolynomial.cpp CubicPolynomial.cpp Segment.cpp Polynomial.h FindRootCubicPol.cpp)

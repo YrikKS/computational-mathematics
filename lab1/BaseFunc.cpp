@@ -18,7 +18,7 @@ void BaseFunc::setAccuracy(double accuracy) {
 }
 
 bool BaseFunc::isHitWithAccuracy(double funcValue) {
-    if (std::abs(funcValue) <= accuracy)
+    if (std::abs(funcValue) < accuracy)
         return true;
     else
         return false;

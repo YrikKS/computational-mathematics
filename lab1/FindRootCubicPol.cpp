@@ -7,8 +7,8 @@
 
 FindRootCubicPol::FindRootCubicPol(double accuracy, double a, double b, double c, double d) {
     FindRootCubicPol::baseFunc = BaseFunc(accuracy);
-    FindRootCubicPol::cubicPolynomial = new CubicPolynomial();
-    cubicPolynomial->setAll(a, b, c, d, baseFunc);
+    FindRootCubicPol::cubicPolynomial = new CubicPolynomial(a, b, c, d, baseFunc);
+//    cubicPolynomial->setAll(a, b, c, d, baseFunc);
     multiplicityVector.resize(3);
     multiplicityVector[0] = 1;
     multiplicityVector[1] = 1;
@@ -17,11 +17,26 @@ FindRootCubicPol::FindRootCubicPol(double accuracy, double a, double b, double c
 
 void FindRootCubicPol::findRoot() {
     SquarPolynomial derivative = cubicPolynomial->getDerivative();
-    if (derivative.getRootCount() == RootCount::ZERO) {
-        findRootWithDerivativeZeroRoot();
-    } else if (derivative.getRootCount() == RootCount::ONE) {
-        std::cout << "Root " << derivative.getRoot().first << std::endl;
-        findRootWithDerivativeOneRoot(derivative);
+    if (derivative.getRootCount() == RootCount::ZERO || derivative.getRootCount() == RootCount::ONE) {
+        if (baseFunc.isHitWithAccuracy(cubicPolynomial->findValueInPoint(0)) < baseFunc.getAccuracy()) {
+            rootCount = RootCount::ONE;
+//            multiplicityVector[0] = 3;
+            root0 = 0;
+        } else if (cubicPolynomial->findValueInPoint(0) < (-1 * baseFunc.getAccuracy())) {
+            rootCount = RootCount::ONE;
+            Segment segment(0, 7);
+            segment.findInfinitySegment(cubicPolynomial, true, 0);
+            root0 = bisection.findRoot(cubicPolynomial, baseFunc, segment);
+        } else if (cubicPolynomial->findValueInPoint(0) < baseFunc.getAccuracy()) {
+            rootCount = RootCount::ONE;
+            Segment segment(-7, 0);
+            segment.findInfinitySegment(cubicPolynomial, false, 0);
+            root0 = bisection.findRoot(cubicPolynomial, baseFunc, segment);
+        }
+//        findRootWithDerivativeZeroRoot();
+//    } else if (derivative.getRootCount() == RootCount::ONE) {
+//        std::cout << "Root " << derivative.getRoot().first << std::endl;
+//        findRootWithDerivativeOneRoot(derivative);
     } else if (derivative.getRootCount() == RootCount::TWO) {
         std::cout << "Root " << derivative.getRoot().first << " second " << derivative.getRoot().second << std::endl;
         findRootWithDerivativeTwoRoot(derivative);
@@ -31,12 +46,12 @@ void FindRootCubicPol::findRoot() {
 void FindRootCubicPol::findRootWithDerivativeZeroRoot() {
     rootCount = RootCount::ONE;
     if (cubicPolynomial->findValueInPoint(0) > 0) {
-        Segment segment(0, 1);
-        segment.findInfinitySegment(cubicPolynomial, true);
+        Segment segment(0, 7);
+        segment.findInfinitySegment(cubicPolynomial, true, 0);
         root0 = bisection.findRoot(cubicPolynomial, baseFunc, segment);
     } else {
-        Segment segment(-1, 0);
-        segment.findInfinitySegment(cubicPolynomial, false);
+        Segment segment(-7, 0);
+        segment.findInfinitySegment(cubicPolynomial, false, 0);
         root0 = bisection.findRoot(cubicPolynomial, baseFunc, segment);
     }
 }
@@ -44,65 +59,67 @@ void FindRootCubicPol::findRootWithDerivativeZeroRoot() {
 void FindRootCubicPol::findRootWithDerivativeOneRoot(SquarPolynomial derivative) {
     rootCount = RootCount::TWO;
     double rootDerivative = derivative.getRoot().first;
-    Segment segment1(rootDerivative, rootDerivative + 1);
-    segment1.findInfinitySegment(cubicPolynomial, true);
+    Segment segment1(rootDerivative, rootDerivative + 7);
+    segment1.findInfinitySegment(cubicPolynomial, true, 0);
     root0 = bisection.findRoot(cubicPolynomial, baseFunc, segment1);
 
-    Segment segment2(rootDerivative - 1, rootDerivative);
-    segment2.findInfinitySegment(cubicPolynomial, false);
+    Segment segment2(rootDerivative - 7, rootDerivative);
+    segment2.findInfinitySegment(cubicPolynomial, false, 0);
     root1 = bisection.findRoot(cubicPolynomial, baseFunc, segment2);
 }
 
 void FindRootCubicPol::findRootWithDerivativeTwoRoot(SquarPolynomial derivative) {
     std::cout << cubicPolynomial->findValueInPoint(derivative.getRoot().first) << std::endl;
+    std::cout << cubicPolynomial->findValueInPoint(derivative.getRoot().second) << std::endl;
     if (cubicPolynomial->findValueInPoint(derivative.getRoot().first) > baseFunc.getAccuracy()) {
         if (cubicPolynomial->findValueInPoint(derivative.getRoot().second) > baseFunc.getAccuracy()) { // 4
             rootCount = RootCount::ONE;
-            Segment segment(derivative.getRoot().first - 1, derivative.getRoot().first);
-            segment.findInfinitySegment(cubicPolynomial, false);
+            Segment segment(derivative.getRoot().first - 7, derivative.getRoot().first);
+            segment.findInfinitySegment(cubicPolynomial, false, 0);
             root0 = bisection.findRoot(cubicPolynomial, baseFunc, segment);
             return;
         } else if (std::abs(cubicPolynomial->findValueInPoint(derivative.getRoot().second)) <
                    baseFunc.getAccuracy()) { // 1
             rootCount = RootCount::TWO;
-            root0 = cubicPolynomial->findValueInPoint(derivative.getRoot().second);
+            root0 = derivative.getRoot().second;
             multiplicityVector[0] = 2;
 
-            Segment segment(derivative.getRoot().first - 1, derivative.getRoot().first);
-            segment.findInfinitySegment(cubicPolynomial, false);
+            Segment segment(derivative.getRoot().first - 7, derivative.getRoot().first);
+            segment.findInfinitySegment(cubicPolynomial, false, 0);
             root1 = bisection.findRoot(cubicPolynomial, baseFunc, segment);
             return;
         } else if (cubicPolynomial->findValueInPoint(derivative.getRoot().second) < -1 * baseFunc.getAccuracy()) { // 3
             rootCount = RootCount::THREE;
-            Segment segment(derivative.getRoot().first - 1, derivative.getRoot().first);
-            segment.findInfinitySegment(cubicPolynomial, false);
+            Segment segment(derivative.getRoot().first - 7, derivative.getRoot().first);
+            segment.findInfinitySegment(cubicPolynomial, false, 0);
+            std::cout << segment.getA() << " --- " << segment.getB() << std::endl;
             root0 = bisection.findRoot(cubicPolynomial, baseFunc, segment);
 
             Segment segment1(derivative.getRoot().first, derivative.getRoot().second);
 //            segment1.findInfinitySegment(cubicPolynomial, false);
             root1 = bisection.findRoot(cubicPolynomial, baseFunc, segment1);
 
-            Segment segment2(derivative.getRoot().second, derivative.getRoot().second + 1);
-            segment2.findInfinitySegment(cubicPolynomial, true);
+            Segment segment2(derivative.getRoot().second, derivative.getRoot().second + 7);
+            segment2.findInfinitySegment(cubicPolynomial, true, 0);
             root2 = bisection.findRoot(cubicPolynomial, baseFunc, segment2);
             return;
         }
-    } else if (cubicPolynomial->findValueInPoint(derivative.getRoot().first) < -1 * baseFunc.getAccuracy()) {
-        if (cubicPolynomial->findValueInPoint(derivative.getRoot().second) < -1 * baseFunc.getAccuracy()) { // 5
+    } else if (cubicPolynomial->findValueInPoint(derivative.getRoot().first) < (-1 * baseFunc.getAccuracy())) {
+        if (cubicPolynomial->findValueInPoint(derivative.getRoot().second) < (-1 * baseFunc.getAccuracy())) { // 5
             rootCount = RootCount::ONE;
-            Segment segment(derivative.getRoot().second, derivative.getRoot().second + 1);
-            segment.findInfinitySegment(cubicPolynomial, true);
+            Segment segment(derivative.getRoot().second, derivative.getRoot().second + 7);
+            segment.findInfinitySegment(cubicPolynomial, true, 0);
             root0 = bisection.findRoot(cubicPolynomial, baseFunc, segment);
             return;
         }
     } else if (std::abs(cubicPolynomial->findValueInPoint(derivative.getRoot().first)) < baseFunc.getAccuracy()) {
-        if (cubicPolynomial->findValueInPoint(derivative.getRoot().second) < -1 * baseFunc.getAccuracy()) { // 2
+        if (cubicPolynomial->findValueInPoint(derivative.getRoot().second) < (-1 * baseFunc.getAccuracy())) { // 2
             rootCount = RootCount::TWO;
-            root0 = cubicPolynomial->findValueInPoint(derivative.getRoot().first);
+            root0 = derivative.getRoot().first;
             multiplicityVector[0] = 2;
 
-            Segment segment1(derivative.getRoot().second, derivative.getRoot().second + 1);
-            segment1.findInfinitySegment(cubicPolynomial, true);
+            Segment segment1(derivative.getRoot().second, derivative.getRoot().second + 7);
+            segment1.findInfinitySegment(cubicPolynomial, true, 0);
             root1 = bisection.findRoot(cubicPolynomial, baseFunc, segment1);
             return;
         } else if (
@@ -161,6 +178,30 @@ FindRootCubicPol::~FindRootCubicPol() {
     if (cubicPolynomial != nullptr)
         delete cubicPolynomial;
     return;
+}
+
+double FindRootCubicPol::getRoot0() const {
+    return root0;
+}
+
+double FindRootCubicPol::getRoot1() const {
+    return root1;
+}
+
+double FindRootCubicPol::getRoot2() const {
+    return root2;
+}
+
+void FindRootCubicPol::setAll(double accuracy, double a, double b, double c, double d) {
+    FindRootCubicPol::baseFunc = BaseFunc(accuracy);
+    if (cubicPolynomial != nullptr)
+        delete cubicPolynomial;
+    FindRootCubicPol::cubicPolynomial = new CubicPolynomial(a, b, c, d, baseFunc);
+//    cubicPolynomial->setAll(a, b, c, d, baseFunc);
+    multiplicityVector.resize(3);
+    multiplicityVector[0] = 1;
+    multiplicityVector[1] = 1;
+    multiplicityVector[2] = 1;
 }
 
 

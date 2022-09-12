@@ -6,6 +6,6 @@
 #define LAB1_CONST_H
 
 namespace Constants {
-    double delta = 1;
+    double delta = 7;
 };
 #endif //LAB1_CONST_H

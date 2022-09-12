@@ -34,26 +34,66 @@ Segment::Segment(double a, double b) : a(a), b(b) {
     delta = Constants::delta;
 }
 
-void Segment::findInfinitySegment(Polynomial *polynomial, bool plusInfinity) {
+void Segment::findInfinitySegment(Polynomial *polynomial, bool plusInfinity, int n) {
     if (plusInfinity) {
-        if ((polynomial->findValueInPoint(a) <= 0 && polynomial->findValueInPoint(b) >= 0) ||
-            (polynomial->findValueInPoint(a) >= 0 && polynomial->findValueInPoint(b) <= 0))
+        if (polynomial->findValueInPoint(a) >= 0) {
+            n = 1;
+            while (polynomial->findValueInPoint(a + n * delta) > 0) {
+                n++;
+            }
+            a = a + (n - 1) * delta;
+            b = a + delta;
             return;
-        else {
-            a = a + delta;
-            b = b + delta;
-            findInfinitySegment(polynomial, plusInfinity);
+        } else {
+            n = 1;
+            while (polynomial->findValueInPoint(a + n * delta) < 0) {
+                n++;
+            }
+            a = a + (n - 1) * delta;
+            b = a + n * delta;
+            return;
         }
     } else {
-        if ((polynomial->findValueInPoint(a) >= 0 && polynomial->findValueInPoint(b) <= 0) ||
-            (polynomial->findValueInPoint(a) <= 0 && polynomial->findValueInPoint(b) >= 0))
+        if (polynomial->findValueInPoint(b) >= 0) {
+            n = 1;
+            while (polynomial->findValueInPoint(b - n * delta) > 0) {
+                n++;
+            }
+            b = b - (n - 1) * delta;
+            a = a - n * delta;
             return;
-        else {
-            a = a - delta;
-            b = b - delta;
-            findInfinitySegment(polynomial, plusInfinity);
+        } else {
+            n = 1;
+            while (polynomial->findValueInPoint(b - n * delta) < 0) {
+                n++;
+            }
+            b = b + (n - 1) * delta;
+            a = a + n * delta;
+            return;
         }
     }
+//
+//    if (plusInfinity) {
+//        if ((polynomial->findValueInPoint(a) <= 0 && polynomial->findValueInPoint(b) >= 0) ||
+//            (polynomial->findValueInPoint(a) >= 0 && polynomial->findValueInPoint(b) <= 0))
+//            return;
+//        else {
+//            a = a + n * delta;
+//            b = b + n * delta;
+//            n++;
+//            findInfinitySegment(polynomial, plusInfinity, n);
+//        }
+//    } else {
+//        if ((polynomial->findValueInPoint(a) >= 0 && polynomial->findValueInPoint(b) <= 0) ||
+//            (polynomial->findValueInPoint(a) <= 0 && polynomial->findValueInPoint(b) >= 0))
+//            return;
+//        else {
+//            a = a - n * delta;
+//            b = b - n * delta;
+//            n++;
+//            findInfinitySegment(polynomial, plusInfinity, n);
+//        }
+//    }
 }
 
 void Segment::preparationVariables(bool plusInfinity) {

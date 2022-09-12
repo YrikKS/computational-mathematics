@@ -9,7 +9,7 @@ CubicPolynomial::CubicPolynomial(double a, double b, double c, double d, BaseFun
     CubicPolynomial::b = b;
     CubicPolynomial::c = c;
     CubicPolynomial::d = d;
-    CubicPolynomial::baseFunc = BaseFunc(0.1);
+    CubicPolynomial::baseFunc = BaseFunc(0.0001);
     CubicPolynomial::derivative = SquarPolynomial(3 * a, 2 * b, c, baseFunc);
 }
 
@@ -30,7 +30,8 @@ double CubicPolynomial::getD() const {
 }
 
 double CubicPolynomial::findValueInPoint(double x) {
-    return a * x * x * x + b * x * x + c * x + d;
+    double fX = a * x * x * x + b * x * x + c * x + d;
+    return fX;
 }
 
 SquarPolynomial CubicPolynomial::getDerivative() {
