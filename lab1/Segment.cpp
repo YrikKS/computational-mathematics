@@ -67,8 +67,8 @@ void Segment::findInfinitySegment(Polynomial *polynomial, bool plusInfinity, int
             while (polynomial->findValueInPoint(b - n * delta) < 0) {
                 n++;
             }
-            b = b + (n - 1) * delta;
-            a = a + n * delta;
+            b = b - (n - 1) * delta;
+            a = a - n * delta;
             return;
         }
     }
