@@ -43,7 +43,7 @@ public:
 
     void setRootCount(RootCount rootCount);
 
-
+    double findValueDerivate(double x);
 private:
     RootCount rootCount;
     double a;

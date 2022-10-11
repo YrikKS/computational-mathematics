@@ -28,10 +28,12 @@ public:
 
     double getRoot2() const;
 
+    void calculateMultiplicityVector(int numbRoot);
+
 private:
-    double root0 = 0;
-    double root1 = 0;
-    double root2 = 0;
+    double root0 = 0.0;
+    double root1 = 0.0;
+    double root2 = 0.0;
     std::vector<int> multiplicityVector;
 
     void findRootWithDerivativeZeroRoot();

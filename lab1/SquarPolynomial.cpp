@@ -79,4 +79,9 @@ void SquarPolynomial::setRootCount(RootCount rootCount) {
 
 SquarPolynomial::SquarPolynomial() {}
 
+double SquarPolynomial::findValueDerivate(double x) {
+    double fx111 = 2 * x * a + b;
+    return fx111;
+}
+
 

@@ -129,4 +129,70 @@ TEST(FindAllTEst, WorkTest){
     finder.printAll();
     ASSERT_LE(std::abs(finder.getRoot0()), baseFunc.getAccuracy());
 
+
+    finder.setAll(0.0001, 1, -7, 1, -7);
+    finder.findRoot();
+    finder.printAll();
+    ASSERT_LE(std::abs(finder.getRoot0() - 7), baseFunc.getAccuracy());
+
+    finder.setAll(0.0001, 1.0, 1.001, 1.0, 1.001);
+    finder.findRoot();
+    finder.printAll();
+    ASSERT_LE(std::abs(finder.getRoot0() + 1.001), baseFunc.getAccuracy());
+
+    finder.setAll(0.000001, 1.0, 10.0, 5.0, 50.0);
+    finder.findRoot();
+    finder.printAll();
+    ASSERT_LE(std::abs(finder.getRoot0() + 10), baseFunc.getAccuracy());
+
+    finder.setAll(0.0001, 1, -3, 5, -15);
+    finder.findRoot();
+    finder.printAll();
+    ASSERT_LE(std::abs(finder.getRoot0() - 3), baseFunc.getAccuracy());
+
+
+    finder.setAll(0.0001, 1, 0, 0, 0);
+    finder.findRoot();
+    finder.printAll();
+    ASSERT_LE(std::abs(finder.getRoot0()), baseFunc.getAccuracy());
+
+
+    finder.setAll(0.0001, 1, -3, 3, -1);
+    finder.findRoot();
+    finder.printAll();
+    ASSERT_LE(std::abs(finder.getRoot0() - 1), 0.1);
+
+    finder.setAll(0.0000001, 1, 3.27, 3.5643, -1.29503);
+    finder.findRoot();
+    finder.printAll();
+    ASSERT_LE(std::abs(finder.getRoot0() - 0.283), 0.1);
+
+    finder.setAll(0.00001, 1, 3.27, 3.5643, -1.29503);
+    finder.findRoot();
+    finder.printAll();
+    ASSERT_LE(std::abs(finder.getRoot0() - 0.283), 0.1);
+
+    finder.setAll(0.0001, 1, -5, 8, -4);
+    finder.findRoot();
+    finder.printAll();
+    ASSERT_LE(std::abs(finder.getRoot0() - 2), 0.001);
+    ASSERT_LE(std::abs(finder.getRoot1() - 1), 0.001);
+
+    finder.setAll(0.0001, 1, -5, 8, -4);
+    finder.findRoot();
+    finder.printAll();
+    ASSERT_LE(std::abs(finder.getRoot0() - 2), 0.001);
+
+    finder.setAll(0.0001, 1, -4, -3, 18);
+    finder.findRoot();
+    finder.printAll();
+    ASSERT_LE(std::abs(finder.getRoot0() - 3), 0.001);
+    ASSERT_LE(std::abs(finder.getRoot1() + 2), 0.001);
+
+//    finder.setAll(0.0001, -8, -4, -3, 18);
+//    finder.findRoot();
+//    finder.printAll();
+//    ASSERT_LE(std::abs(finder.getRoot0() - 3), 0.001);
+//
+
 }
